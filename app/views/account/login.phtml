@@ -1,0 +1,49 @@
+<div class="container position-absolute top-50 start-50 translate-middle login">
+    <form method="post">
+        <div class="container text-center">
+            <span class="formheader">Войти в систему</span>
+        </div>
+        <?php if (isset($content) && !empty($content)) : ?>
+            <div class="alert alert-danger text-center mt-3">
+                <span><?= $content;?></span>
+            </div>
+        <?php endif; ?>
+        <div class="container text-center">
+        </div>
+        <div class="mb-3 mt-3">
+            <label for="email" class="form-label">Почта</label>
+            <input type="text" class="form-control" id="email" name="email">
+            <small><?php if (isset($errors['email'])) :
+                        echo $errors['email']; ?> <style>
+                        #email {
+                            border-color: red;
+                        }
+                    </style>
+                <?php endif; ?> </small>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Пароль</label>
+            <input type="password" class="form-control" id="password" name="password">
+            <small><?php if (isset($errors['password'])) :
+                        echo $errors['password']; ?> <style>
+                        #password {
+                            border-color: red;
+                        }
+                    </style>
+                <?php endif; ?> </small>
+        </div>
+        <div class="mb-3 form-check">
+            <label class="check" for="check">Запомнить меня</label>
+            <input type="checkbox" class="form-check-input" id="check">
+        </div>
+        <button type="submit" class="container text-center btn btn-primary mb-3">Войти</button>
+        <div class="row">
+            <div class="col">
+                <a href="/account/recovery">Забыли пароль?</a>
+            </div>
+            <div class="col">
+                <a href="/account/signup">Зарегистрироваться</a>
+            </div>
+        </div>
+    </form>
+</div>

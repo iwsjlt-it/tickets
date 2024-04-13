@@ -1,0 +1,39 @@
+<?php
+if (!empty($users)) {
+?>
+    <p>Количество пользователей: <?php echo count($users) ?></p>
+    <table class="table table-bordered table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>email</th>
+                <th>password</th>
+                <th>role</th>
+                <th>status</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+            </tr>
+        </tfoot>
+        <tbody>
+            <?php foreach ($users as $user) { ?>
+                <tr>
+                    <td><?php echo $user['id']; ?></td>
+                    <td><?php echo $user['name']; ?></td>
+                    <td><?php echo $user['email']; ?></td>
+                    <td><?php echo $user['password']; ?></td>
+                    <td><?php echo $user['role']; ?></td>
+                    <td><?php echo $user['status']; ?></td>
+                    <td><a href="/users/update?id=<?php echo $user['id'] ?>">Изменить</a></td>
+                    <td><a href="/users/delete?id=<?php echo $user['id'] ?>">Удалить</a></td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+<?php
+}
+else {
+    echo 'Пользователей не найдено';
+}

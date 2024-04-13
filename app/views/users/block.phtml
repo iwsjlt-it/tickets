@@ -1,0 +1,46 @@
+<?php
+
+use Phalcon\Mvc\Controller;
+
+class UsersController extends Controller
+{
+
+    public function indexAction()
+    {
+        $this->response->redirect('/users/list');
+    }
+    public function listAction()
+    {
+        $this->view->pageTitle = 'Учётные записи';
+        $this->view->users = Users::find();
+    }
+    public function deleteAction()
+    {
+        $id = $this->request->get('id');
+        $user = Users::findFirst("id=$id");
+        $user->delete();
+        $this->response->redirect('/users');
+    }
+    public function updateAction()
+    {
+        $this->view->pageTitle = 'Изменение данных';
+        $id = $this->request->get('id');
+        $user = Users::findFirst([
+            'conditions' => 'id = :id:',
+            'bind' => [
+                'id' => $id
+            ]
+        ]);
+        if ($this->request->isPost()) {
+
+            $post = $this->request->getPost();
+            $user->assign($post);
+            $success = $user->save();
+            if ($success) {
+                $this->response->redirect('/users');
+            }
+        }
+
+        $this->view->user = $user->toArray();
+    }
+}

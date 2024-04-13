@@ -1,0 +1,70 @@
+<div class="container update position-absolute top-50 start-50 translate-middle login">
+    <form method="post">
+        <div class="container text-center">
+            <span class="formheader">Изменение данных пользователя</span>
+        </div>
+        <div class="row row-cols-1 mt-4">
+            <div class="col mb-3 ">
+                <label for="last_name" class="form-label">Фамилия</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" value=<?php echo $user['last_name'] ?>>
+                <small><?php if (isset($errors['last_name'])) :
+                            echo $errors['last_name']; ?> <style>
+                            #last_name {
+                                border-color: red;
+                            }
+                        </style>
+                    <?php endif; ?> </small>
+            </div>
+            <div class="col mb-3">
+                <label for="first_name" class="form-label">Имя</label>
+                <input type="text" class="form-control" id="first_name" name="first_name" value=<?php echo $user['first_name'] ?>>
+                <small><?php if (isset($errors['first_name'])) :
+                            echo $errors['first_name']; ?> <style>
+                            #first_name {
+                                border-color: red;
+                            }
+                        </style>
+                    <?php endif; ?> </small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col mb-3">
+                <label for="email" class="form-label">Почта</label>
+                <input type="email" class="form-control" id="email" name="email" value=<?php echo $user['email'] ?>>
+                <small><?php if (isset($errors['email'])) :
+                            echo $errors['email']; ?> <style>
+                            #email {
+                                border-color: red;
+                            }
+                        </style>
+                    <?php endif; ?> </small>
+            </div>
+            <div class="row">
+                <div class="col mb-3">
+                    <label for="login" class="form-label">Логин</label>
+                    <input type="text" class="form-control" id="login" name="login" value=<?php echo $user['login'] ?>>
+                    <small><?php if (isset($errors['login'])) :
+                                echo $errors['login']; ?> <style>
+                                #login {
+                                    border-color: red;
+                                }
+                            </style>
+                        <?php endif; ?> </small>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col mb-3">
+                    <p>Текущая роль: <?php echo $user['role'] ?></p>
+                    <label for="role" class="form-label">Выбрать новую роль: </label>
+                    <select name="role" id="role">
+                        <option value=<?php echo $user['role'] ?>>Список ролей: </option>
+                        <option value="admin">Администратор</option>
+                        <option value="client">Клиент</option>
+                        <option value="employee">Сотрудник</option>
+                        <option value="guest">Гость</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="container text-center btn btn-primary mb-3">Изменить</button>
+    </form>
+</div>

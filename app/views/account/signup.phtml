@@ -1,0 +1,70 @@
+<div class="container position-absolute top-50 start-50 translate-middle signup">
+    <form method="post">
+        <div class="container text-center">
+            <span class="formheader">Регистрация</span>
+        </div>
+        <div class="row mt-4">
+            <div class="col mb-3 ">
+                <label for="last_name" class="form-label">Фамилия</label>
+                <input type="text" class="form-control" id="last_name" name="last_name">
+                <small><?php if (isset($errors['last_name'])) :
+                            echo $errors['last_name']; ?> <style>
+                            #last_name {
+                                border-color: red;
+                            }
+                        </style>
+                    <?php endif; ?> </small>
+            </div>
+            <div class="col mb-3">
+                <label for="first_name" class="form-label">Имя</label>
+                <input type="text" class="form-control" id="first_name" name="first_name">
+                <small><?php if (isset($errors['first_name'])) :
+                            echo $errors['first_name']; ?> <style>
+                            #first_name {
+                                border-color: red;
+                            }
+                        </style>
+                    <?php endif; ?> </small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-auto mb-3">
+                <label for="email" class="form-label">Почта</label>
+                <input type="email" class="form-control" id="email" name="email">
+                <small><?php if (isset($errors['email'])) :
+                            echo $errors['email']; ?> <style>
+                            #email {
+                                border-color: red;
+                            }
+                        </style>
+                    <?php endif; ?> </small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col mb-4">
+                <label for="password" class="form-label">Пароль</label>
+                <input type="password" class="form-control" id="password" name="password">
+                <small><?php if (isset($errors['password'])) :
+                            echo $errors['password']; ?> <style>
+                            #password {
+                                border-color: red;
+                            }
+                        </style>
+                    <?php endif; ?> </small>
+            </div>
+            <div class="col mb-4">
+                <label for="confirmpassword" class="form-label">Подтверждение пароля</label>
+                <input type="password" class="form-control" id="confirmpassword" name="confirmpassword">
+                <small><?php if (isset($errors['confirmpassword'])) :
+                            echo $errors['confirmpassword']; ?> <style>
+                            #confirmpassword {
+                                border-color: red;
+                            }
+                        </style>
+                    <?php endif; ?> </small>
+            </div>
+        </div>
+
+        <button type="submit" class="container text-center btn btn-primary mb-3">Зарегистрироваться</button>
+    </form>
+</div>
