@@ -1,1 +1,149 @@
-<h1>Hi!</h1>
+<div class="m-3">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Роли</h5>
+                </div>
+                <ul class="list-group list-group-flush" id="rolesList">
+                    <?php $iter = 0;
+                    foreach ($roles_desc as $role) { ?>
+                        <li class="list-group-item" value="<?= $roles[$iter] ?>"><?= $role ?></li>
+                    <?php $iter++;
+                    }  ?>
+                </ul>
+            </div>
+            <form method="get">
+                <button class="btn btn-primary mt-3" type="submit">Добавить роль</button>
+                <button class="btn btn-primary mt-3" type="submit">Удалить роль</button><br>
+                <button class="btn btn-primary mt-3" id="send" type="submit">Подтвердить</button>
+            </form>
+        </div>
+        <div class="col-md-9" id="controllersList" style="display: none;">
+            <div class="row row-cols-3">
+                <?php $iter = 0;
+                foreach (json_decode($controllers) as $controller => $actions) {
+                ?>
+                    <div class="col">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h5 class="card-title"><?= $controllers_desc[$iter] . "($controller)" ?></h5>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <?php foreach ($actions as $action) { ?>
+                                    <li class="list-group-item">
+                                        <label for="access"><?= $action ?>
+                                            <input class="allowList" type="checkbox" name="<?= $controller ?>" value="<?= $action ?>">
+                                        </label>
+                                    </li>
+                                <?php } ?>
+                            </ul>
+                        </div>
+                    </div>
+                <?php $iter = $iter + 1;
+                } ?>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const rolesList = document.getElementById('rolesList');
+        const controllersList = document.getElementById('controllerList');
+        const allowList = document.querySelectorAll('.allowList');
+        const allowData = <?php echo $allow_list ?>;
+        let dataToSend = <?php echo $allow_list ?>;
+        let role;
+        let conditionData = {};
+
+        rolesList.addEventListener('click', function() {
+            role = event.target.getAttribute('value');
+            addCheckedList(role);
+            console.log(role);
+        })
+
+        allowList.forEach(function(input) {
+            input.addEventListener('click', function() {
+
+                const setCheck = event.target.checked;
+                const action = event.target.getAttribute('value');
+                const controller = event.target.getAttribute('name');
+
+                console.log(setCheck);
+                console.log(action);
+                console.log(controller);
+                console.log(role);
+                if (!conditionData[role]) {
+                    conditionData[role] = {};
+                }
+                if (!conditionData[role][controller]) {
+                    conditionData[role][controller] = {};
+                }
+                conditionData[role][controller][action] = setCheck;
+                dataToSend[role][controller][action] = setCheck;
+                console.log(conditionData);
+            });
+        });
+
+        function addCheckedList(role) {
+            console.log(conditionData);
+            const controllers = allowData[role];
+            for (const controller in controllers) {
+                const actions = controllers[controller];
+                for (const action in actions) {
+                    const allow = actions[action];
+                    const input = document.querySelector(`input[name="${controller}"][value="${action}"]`)
+                    if (allow) {
+                        input.checked = true;
+
+                    } else {
+                        input.checked = false;
+
+                    }
+                }
+            }
+            if (conditionData[role]) {
+                const conditionControllers = conditionData[role];
+                for (const controller in conditionControllers) {
+                    const actions = conditionControllers[controller];
+                    for (const action in actions) {
+                        const allow = actions[action];
+                        const input = document.querySelector(`input[name="${controller}"][value="${action}"]`)
+                        if (allow) {
+                            input.checked = true;
+                        } else {
+                            input.checked = false;
+                        }
+                    }
+                }
+
+            }
+
+            document.getElementById('controllersList').style.display = 'block';
+            console.log(dataToSend);
+        }
+
+        const btn = document.getElementById("send");
+        btn.addEventListener('click', function() {
+            const XHR = new XMLHttpRequest();
+            const FD = new FormData();
+
+            FD.append('data', JSON.stringify(dataToSend));
+
+
+            XHR.addEventListener("load", function(event) {
+                alert("Yeah! Data sent and response loaded.");
+            });
+
+            XHR.addEventListener(" error", function(event) {
+                alert("Oops! Something went wrong.");
+            });
+
+            XHR.open("POST", "/access/list");
+
+            XHR.send(FD);
+        })
+    });
+</script>

@@ -1,6 +1,9 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * Аккаунт
+ */
 class AccountController extends SecurityController
 {
     public function indexAction()
@@ -40,12 +43,10 @@ class AccountController extends SecurityController
                         //$this->session->set('userRole', $user->role);
                         $this->response->redirect('/');
                     } else {
-                        $content = 'Неверная почта или пароль';
-                        $this->view->content = $this->response->setContent($content);
+                        $this->view->content = 'Неверная почта или пароль';
                     }
                 } else {
-                    $content = 'Неверная почта или пароль';
-                    $this->view->content = $this->response->setContent($content);
+                    $this->view->content = 'Неверная почта или пароль';
                 }
             } else {
                 foreach ($messages as $message) {
@@ -54,7 +55,7 @@ class AccountController extends SecurityController
                 $this->view->errors = $errors;
             }
         }
-        $this->view->content = $this->response->getContent();
+        //$this->view->content = $this->response->getContent();
     }
 
     public function signupAction()

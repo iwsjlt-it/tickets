@@ -26,8 +26,8 @@ if (!empty($users)) {
                     <td><?php echo $user['password']; ?></td>
                     <td><?php echo $user['role']; ?></td>
                     <td><?php echo $user['status']; ?></td>
-                    <td><a href="/users/update?id=<?php echo $user['id'] ?>">Изменить</a></td>
-                    <td><a href="/users/delete?id=<?php echo $user['id'] ?>">Удалить</a></td>
+                    <td><a href="/users/update/<?php echo $user['id'] ?>">Изменить</a></td>
+                    <td><a href="/users/delete/<?php echo $user['id'] ?>">Удалить</a></td>
                 </tr>
             <?php } ?>
         </tbody>

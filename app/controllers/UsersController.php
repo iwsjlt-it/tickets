@@ -1,5 +1,8 @@
 <?php
 use Phalcon\mvc\Controller;
+/**
+ * Пользователи
+ */
 class UsersController extends SecurityController
 {
 
@@ -20,12 +23,11 @@ class UsersController extends SecurityController
         $user->delete();
         $this->response->redirect('/users');
     }
-    public function updateAction()
+    public function updateAction($id)
     {
         $this->view->pageTitle = 'Изменение данных';
-        $id = $this->request->get('id');
+       // $id = $this->request->get('id');
         $user = (new Users)->findFirstById($id);
-        $u = new Users();
 
         if ($this->request->isPost()) {
             $post = $this->request->getPost();
