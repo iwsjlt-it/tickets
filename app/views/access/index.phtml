@@ -1,316 +1,226 @@
-<form method="post">
-    <table class="table caption-top table-bordered table-hover align-middle">
-        <caption class="align-middle">Управление списком контроля доступа</caption>
-        <thead>
-            <tr>
-                <th scope="col" rowspan="3">Список контроллеров</th>
-                <th class="table align-middle" scope="col" colspan="3">Список ролей/действий</th>
-            </tr>
-            <tr>
-                <th scope="col">Гость</th>
-                <th scope="col">Клиент</th>
-                <th scope="col">Сотрудник</th>
-            </tr>
-        </thead>
-        <tbody class="table-group-divider">
-            <tr>
-                <th scope="row">Index<br>(Начальная страница tickets/)</th>
-                <td>
-                    <label for="guest!index!index">index (Начальная страница)</label>
-                    <input type="checkbox" id="guest!index!index" name="guest!index!index" value="1" <?php if ($acl->isAllowed('guest', 'index', 'index')) : ?> checked<?php endif; ?> /><br>
-                </td>
-                <td>
-                    <label for="client!index!index">index (Начальная страница)</label>
-                    <input type="checkbox" id="client!index!index" name="client!index!index" value="1" <?php if ($acl->isAllowed('client', 'index', 'index')) : ?> checked<?php endif; ?> /><br>
-                </td>
-                <td>
-                    <label for="employee!index!index">index (Начальная страница)</label>
-                    <input type="checkbox" id="employee!index!index" name="employee!index!index" value="1" <?php if ($acl->isAllowed('employee', 'index', 'index')) : ?> checked<?php endif; ?> /><br>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">Users<br>(управление пользователями)</th>
-                <td>
-                    <label for="guest!users!index">index (начальная страница)</label>
-                    <input type="checkbox" id="guest!users!index" name="guest!users!index" value="1" <?php if ($acl->isAllowed('guest', 'users', 'index')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!users!list">list (список)</label>
-                    <input type="checkbox" id="guest!users!list" name="guest!users!list" value="1" <?php if ($acl->isAllowed('guest', 'users', 'list')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!users!delete">delete (удаление)</label>
-                    <input type="checkbox" id="guest!users!delete" name="guest!users!delete" value="1" <?php if ($acl->isAllowed('guest', 'users', 'delete')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!users!update">update (обновление данных)</label>
-                    <input type="checkbox" id="guest!users!update" name="guest!users!update" value="1" <?php if ($acl->isAllowed('guest', 'users', 'update')) : ?> checked<?php endif; ?> />
-                </td>
-                <td>
-                    <label for="client!users!index">index (начальная страница)</label>
-                    <input type="checkbox" id="client!users!index" name="client!users!index" value="1" <?php if ($acl->isAllowed('client', 'users', 'index')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!users!list">list (список)</label>
-                    <input type="checkbox" id="client!users!list" name="client!users!list" value="1" <?php if ($acl->isAllowed('client', 'users', 'list')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!users!delete">delete (удаление)</label>
-                    <input type="checkbox" id="client!users!delete" name="client!users!delete" value="1" <?php if ($acl->isAllowed('client', 'users', 'delete')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!users!update">update (обновление данных)</label>
-                    <input type="checkbox" id="client!users!update" name="client!users!update" value="1" <?php if ($acl->isAllowed('client', 'users', 'update')) : ?> checked<?php endif; ?> />
-                </td>
-                <td>
-                    <label for="employee!users!index">index (начальная страница)</label>
-                    <input type="checkbox" id="employee!users!index" name="employee!users!index" value="1" <?php if ($acl->isAllowed('employee', 'users', 'index')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!users!list">list (список)</label>
-                    <input type="checkbox" id="employee!users!list" name="employee!users!list" value="1" <?php if ($acl->isAllowed('employee', 'users', 'list')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!users!delete">delete (удаление)</label>
-                    <input type="checkbox" id="employee!users!delete" name="employee!users!delete" value="1" <?php if ($acl->isAllowed('employee', 'users', 'delete')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!users!update">update (обновление данных)</label>
-                    <input type="checkbox" id="employee!users!update" name="employee!users!update" value="1" <?php if ($acl->isAllowed('employee', 'users', 'update')) : ?> checked<?php endif; ?> />
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">Account<br>(операции с аккаунтом)</th>
-                <td>
-                    <label for="guest!account!index">index (Начальная страница)</label>
-                    <input type="checkbox" id="guest!account!index" name="guest!account!index" value="1" <?php if ($acl->isAllowed('guest', 'account', 'index')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!account!login">login (Авторизация)</label>
-                    <input type="checkbox" id="guest!account!login" name="guest!account!login" value="1" <?php if ($acl->isAllowed('guest', 'account', 'login')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!account!signup">signup (Регистрация)</label>
-                    <input type="checkbox" id="guest!account!signup" name="guest!account!signup" value="1" <?php if ($acl->isAllowed('guest', 'account', 'signup')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!account!recovery">recovery (Восстановление доступа)</label>
-                    <input type="checkbox" id="guest!account!recovery" name="guest!account!recovery" value="1" <?php if ($acl->isAllowed('guest', 'account', 'recovery')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!account!logout">logout (Выход из аккаунта)</label>
-                    <input type="checkbox" id="guest!account!logout" name="guest!account!logout" value="1" <?php if ($acl->isAllowed('guest', 'account', 'logout')) : ?> checked<?php endif; ?> /><br>
-                </td>
-                <td>
-                    <label for="client!account!index">index (Начальная страница)</label>
-                    <input type="checkbox" id="client!account!index" name="client!account!index" value="1" <?php if ($acl->isAllowed('client', 'account', 'index')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!account!login">login (Авторизация)</label>
-                    <input type="checkbox" id="client!account!login" name="client!account!login" value="1" <?php if ($acl->isAllowed('client', 'account', 'login')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!account!signup">signup (Регистрация)</label>
-                    <input type="checkbox" id="client!account!signup" name="client!account!signup" value="1" <?php if ($acl->isAllowed('client', 'account', 'signup')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!account!recovery">recovery (Восстановление доступа)</label>
-                    <input type="checkbox" id="client!account!recovery" name="client!account!recovery" value="1" <?php if ($acl->isAllowed('client', 'account', 'recovery')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!account!logout">logout (Выход из аккаунта)</label>
-                    <input type="checkbox" id="client!account!logout" name="client!account!logout" value="1" <?php if ($acl->isAllowed('client', 'account', 'logout')) : ?> checked<?php endif; ?> /><br>
-                </td>
-                <td>
-                    <label for="employee!account!index">index (Начальная страница)</label>
-                    <input type="checkbox" id="employee!account!index" name="employee!account!index" value="1" <?php if ($acl->isAllowed('employee', 'account', 'index')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!account!login">login (Авторизация)</label>
-                    <input type="checkbox" id="employee!account!login" name="employee!account!login" value="1" <?php if ($acl->isAllowed('employee', 'account', 'login')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!account!signup">signup (Регистрация)</label>
-                    <input type="checkbox" id="employee!account!signup" name="employee!account!signup" value="1" <?php if ($acl->isAllowed('employee', 'account', 'signup')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!account!recovery">recovery (Восстановление доступа)</label>
-                    <input type="checkbox" id="employee!account!recovery" name="employee!account!recovery" value="1" <?php if ($acl->isAllowed('employee', 'account', 'recovery')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!account!logout">logout (Выход из аккаунта)</label>
-                    <input type="checkbox" id="employee!account!logout" name="employee!account!logout" value="1" <?php if ($acl->isAllowed('employee', 'account', 'logout')) : ?> checked<?php endif; ?> /><br>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">Tickets<br>(функционал тикетов)</th>
-                <td>
-                    <label for="guest!tickets!index">index</label>
-                    <input type="checkbox" id="guest!tickets!index" name="guest!tickets!index" value="1" <?php if ($acl->isAllowed('guest', 'tickets', 'index')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!tickets!creation">creation</label>
-                    <input type="checkbox" id="guest!tickets!creation" name="guest!tickets!creation" value="1" <?php if ($acl->isAllowed('guest', 'tickets', 'creation')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!tickets!templates">templates</label>
-                    <input type="checkbox" id="guest!tickets!templates" name="guest!tickets!templates" value="1" <?php if ($acl->isAllowed('guest', 'tickets', 'templates')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!tickets!viewlistModal">viewlistModal</label>
-                    <input type="checkbox" id="guest!tickets!viewlistModal" name="guest!tickets!viewlistModal" value="1" <?php if ($acl->isAllowed('guest', 'tickets', 'viewlistModal')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!tickets!editticket">editticket</label>
-                    <input type="checkbox" id="guest!tickets!editticket" name="guest!tickets!editticket" value="1" <?php if ($acl->isAllowed('guest', 'tickets', 'editticket')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!tickets!update">update</label>
-                    <input type="checkbox" id="guest!tickets!update" name="guest!tickets!update" value="1" <?php if ($acl->isAllowed('guest', 'tickets', 'update')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!tickets!viewlist">viewlist</label>
-                    <input type="checkbox" id="guest!tickets!viewlist" name="guest!tickets!viewlist" value="1" <?php if ($acl->isAllowed('guest', 'tickets', 'viewlist')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!tickets!send">send</label>
-                    <input type="checkbox" id="guest!tickets!send" name="guest!tickets!send" value="1" <?php if ($acl->isAllowed('guest', 'tickets', 'send')) : ?> checked<?php endif; ?> /><br>
-                </td>
-                <td>
-                    <label for="client!tickets!index">index</label>
-                    <input type="checkbox" id="client!tickets!index" name="client!tickets!index" value="1" <?php if ($acl->isAllowed('client', 'tickets', 'index')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!tickets!creation">creation</label>
-                    <input type="checkbox" id="client!tickets!creation" name="client!tickets!creation" value="1" <?php if ($acl->isAllowed('client', 'tickets', 'creation')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!tickets!templates">templates</label>
-                    <input type="checkbox" id="client!tickets!templates" name="client!tickets!templates" value="1" <?php if ($acl->isAllowed('client', 'tickets', 'templates')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!tickets!viewlistModal">viewlistModal</label>
-                    <input type="checkbox" id="client!tickets!viewlistModal" name="client!tickets!viewlistModal" value="1" <?php if ($acl->isAllowed('client', 'tickets', 'viewlistModal')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!tickets!editticket">editticket</label>
-                    <input type="checkbox" id="client!tickets!editticket" name="client!tickets!editticket" value="1" <?php if ($acl->isAllowed('client', 'tickets', 'editticket')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!tickets!update">update</label>
-                    <input type="checkbox" id="client!tickets!update" name="client!tickets!update" value="1" <?php if ($acl->isAllowed('client', 'tickets', 'update')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!tickets!viewlist">viewlist</label>
-                    <input type="checkbox" id="client!tickets!viewlist" name="client!tickets!viewlist" value="1" <?php if ($acl->isAllowed('client', 'tickets', 'viewlist')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!tickets!send">send</label>
-                    <input type="checkbox" id="client!tickets!send" name="client!tickets!send" value="1" <?php if ($acl->isAllowed('client', 'tickets', 'send')) : ?> checked<?php endif; ?> /><br>
-                </td>
-                <td>
-                    <label for="employee!tickets!index">index</label>
-                    <input type="checkbox" id="employee!tickets!index" name="employee!tickets!index" value="1" <?php if ($acl->isAllowed('employee', 'tickets', 'index')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!tickets!creation">creation</label>
-                    <input type="checkbox" id="employee!tickets!creation" name="employee!tickets!creation" value="1" <?php if ($acl->isAllowed('employee', 'tickets', 'creation')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!tickets!templates">templates</label>
-                    <input type="checkbox" id="employee!tickets!templates" name="employee!tickets!templates" value="1" <?php if ($acl->isAllowed('employee', 'tickets', 'templates')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!tickets!viewlistModal">viewlistModal</label>
-                    <input type="checkbox" id="employee!tickets!viewlistModal" name="employee!tickets!viewlistModal" value="1" <?php if ($acl->isAllowed('employee', 'tickets', 'viewlistModal')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!tickets!editticket">editticket</label>
-                    <input type="checkbox" id="employee!tickets!editticket" name="employee!tickets!editticket" value="1" <?php if ($acl->isAllowed('employee', 'tickets', 'editticket')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!tickets!update">update</label>
-                    <input type="checkbox" id="employee!tickets!update" name="employee!tickets!update" value="1" <?php if ($acl->isAllowed('employee', 'tickets', 'update')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!tickets!viewlist">viewlist</label>
-                    <input type="checkbox" id="employee!tickets!viewlist" name="employee!tickets!viewlist" value="1" <?php if ($acl->isAllowed('employee', 'tickets', 'viewlist')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!tickets!send">send</label>
-                    <input type="checkbox" id="employee!tickets!send" name="employee!tickets!send" value="1" <?php if ($acl->isAllowed('employee', 'tickets', 'send')) : ?> checked<?php endif; ?> /><br>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">Info (Справочник)</th>
-                <td>
-                    <label for="guest!info!index">index</label>
-                    <input type="checkbox" id="guest!info!index" name="guest!info!index" value="1" <?php if ($acl->isAllowed('guest', 'info', 'index')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!info!editlist">editlist</label>
-                    <input type="checkbox" id="guest!info!editlist" name="guest!info!editlist" value="1" <?php if ($acl->isAllowed('guest', 'info', 'editlist')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!info!viewlist">viewlist</label>
-                    <input type="checkbox" id="guest!info!viewlist" name="guest!info!viewlist" value="1" <?php if ($acl->isAllowed('guest', 'info', 'viewlist')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!info!aboutlist">aboutlist</label>
-                    <input type="checkbox" id="guest!info!aboutlist" name="guest!info!aboutlist" value="1" <?php if ($acl->isAllowed('guest', 'info', 'aboutlist')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!info!formlist">formlist</label>
-                    <input type="checkbox" id="guest!info!formlist" name="guest!info!formlist" value="1" <?php if ($acl->isAllowed('guest', 'info', 'formlist')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!info!send">send</label>
-                    <input type="checkbox" id="guest!info!send" name="guest!info!send" value="1" <?php if ($acl->isAllowed('guest', 'info', 'send')) : ?> checked<?php endif; ?> /><br>
-                </td>
-                <td>
-                    <label for="client!info!index">index</label>
-                    <input type="checkbox" id="client!info!index" name="client!info!index" value="1" <?php if ($acl->isAllowed('client', 'info', 'index')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!info!editlist">editlist</label>
-                    <input type="checkbox" id="client!info!editlist" name="client!info!editlist" value="1" <?php if ($acl->isAllowed('client', 'info', 'editlist')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!info!viewlist">viewlist</label>
-                    <input type="checkbox" id="client!info!viewlist" name="client!info!viewlist" value="1" <?php if ($acl->isAllowed('client', 'info', 'viewlist')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!info!aboutlist">aboutlist</label>
-                    <input type="checkbox" id="client!info!aboutlist" name="client!info!aboutlist" value="1" <?php if ($acl->isAllowed('client', 'info', 'aboutlist')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!info!formlist">formlist</label>
-                    <input type="checkbox" id="client!info!formlist" name="client!info!formlist" value="1" <?php if ($acl->isAllowed('client', 'info', 'formlist')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!info!send">send</label>
-                    <input type="checkbox" id="client!info!send" name="client!info!send" value="1" <?php if ($acl->isAllowed('client', 'info', 'send')) : ?> checked<?php endif; ?> /><br>
-                </td>
-                <td>
-                    <label for="employee!info!index">index</label>
-                    <input type="checkbox" id="employee!info!index" name="employee!info!index" value="1" <?php if ($acl->isAllowed('employee', 'info', 'index')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!info!editlist">editlist</label>
-                    <input type="checkbox" id="employee!info!editlist" name="employee!info!editlist" value="1" <?php if ($acl->isAllowed('employee', 'info', 'editlist')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!info!viewlist">viewlist</label>
-                    <input type="checkbox" id="employee!info!viewlist" name="employee!info!viewlist" value="1" <?php if ($acl->isAllowed('employee', 'info', 'viewlist')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!info!aboutlist">aboutlist</label>
-                    <input type="checkbox" id="employee!info!aboutlist" name="employee!info!aboutlist" value="1" <?php if ($acl->isAllowed('employee', 'info', 'aboutlist')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!info!formlist">formlist</label>
-                    <input type="checkbox" id="employee!info!formlist" name="employee!info!formlist" value="1" <?php if ($acl->isAllowed('employee', 'info', 'formlist')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!info!send">send</label>
-                    <input type="checkbox" id="employee!info!send" name="employee!info!send" value="1" <?php if ($acl->isAllowed('employee', 'info', 'send')) : ?> checked<?php endif; ?> /><br>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">Line (Линии связи)</th>
-                <td>
-                    <label for="guest!line!list">list</label>
-                    <input type="checkbox" id="guest!line!list" name="guest!line!list" value="1" <?php if ($acl->isAllowed('guest', 'line', 'list')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!line!edit">edit</label>
-                    <input type="checkbox" id="guest!line!edit" name="guest!line!edit" value="1" <?php if ($acl->isAllowed('guest', 'line', 'edit')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!line!catch">catch</label>
-                    <input type="checkbox" id="guest!line!catch" name="guest!line!catch" value="1" <?php if ($acl->isAllowed('guest', 'line', 'catch')) : ?> checked<?php endif; ?> /><br>
-                </td>
-                <td>
-                    <label for="client!line!list">list</label>
-                    <input type="checkbox" id="client!line!list" name="client!line!list" value="1" <?php if ($acl->isAllowed('client', 'line', 'list')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!line!edit">edit</label>
-                    <input type="checkbox" id="client!line!edit" name="client!line!edit" value="1" <?php if ($acl->isAllowed('client', 'line', 'edit')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!line!catch">catch</label>
-                    <input type="checkbox" id="client!line!catch" name="client!line!catch" value="1" <?php if ($acl->isAllowed('client', 'line', 'catch')) : ?> checked<?php endif; ?> /><br>
-                </td>
-                <td>
-                    <label for="employee!line!list">list</label>
-                    <input type="checkbox" id="employee!line!list" name="employee!line!list" value="1" <?php if ($acl->isAllowed('employee', 'line', 'list')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!line!edit">edit</label>
-                    <input type="checkbox" id="employee!line!edit" name="employee!line!edit" value="1" <?php if ($acl->isAllowed('employee', 'line', 'edit')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!line!catch">catch</label>
-                    <input type="checkbox" id="employee!line!catch" name="employee!line!catch" value="1" <?php if ($acl->isAllowed('employee', 'line', 'catch')) : ?> checked<?php endif; ?> /><br>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">Firm (Фирмы)</th>
-                <td>
-                    <label for="guest!firm!list">list</label>
-                    <input type="checkbox" id="guest!firm!list" name="guest!firm!list" value="1" <?php if ($acl->isAllowed('guest', 'firm', 'list')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!firm!edit">edit</label>
-                    <input type="checkbox" id="guest!firm!edit" name="guest!firm!edit" value="1" <?php if ($acl->isAllowed('guest', 'firm', 'edit')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!firm!send">send</label>
-                    <input type="checkbox" id="guest!firm!send" name="guest!firm!send" value="1" <?php if ($acl->isAllowed('guest', 'firm', 'send')) : ?> checked<?php endif; ?> /><br>
-                </td>
-                <td>
-                    <label for="client!firm!list">list</label>
-                    <input type="checkbox" id="client!firm!list" name="client!firm!list" value="1" <?php if ($acl->isAllowed('client', 'firm', 'list')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!firm!edit">edit</label>
-                    <input type="checkbox" id="client!firm!edit" name="client!firm!edit" value="1" <?php if ($acl->isAllowed('client', 'firm', 'edit')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!firm!send">send</label>
-                    <input type="checkbox" id="client!firm!send" name="client!firm!send" value="1" <?php if ($acl->isAllowed('client', 'firm', 'send')) : ?> checked<?php endif; ?> /><br>
-                </td>
-                <td>
-                    <label for="employee!firm!list">list</label>
-                    <input type="checkbox" id="employee!firm!list" name="employee!firm!list" value="1" <?php if ($acl->isAllowed('employee', 'firm', 'list')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!firm!edit">edit</label>
-                    <input type="checkbox" id="employee!firm!edit" name="employee!firm!edit" value="1" <?php if ($acl->isAllowed('employee', 'firm', 'edit')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!firm!send">send</label>
-                    <input type="checkbox" id="employee!firm!send" name="employee!firm!send" value="1" <?php if ($acl->isAllowed('employee', 'firm', 'send')) : ?> checked<?php endif; ?> /><br>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">Contact (контакты)</th>
-                <td>
-                    <label for="guest!contact!list">list</label>
-                    <input type="checkbox" id="guest!contact!list" name="guest!contact!list" value="1" <?php if ($acl->isAllowed('guest', 'contact', 'list')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!contact!edit">edit</label>
-                    <input type="checkbox" id="guest!contact!edit" name="guest!contact!edit" value="1" <?php if ($acl->isAllowed('guest', 'contact', 'edit')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!contact!update">update</label>
-                    <input type="checkbox" id="guest!contact!update" name="guest!contact!update" value="1" <?php if ($acl->isAllowed('guest', 'contact', 'update')) : ?> checked<?php endif; ?> /><br>
-                </td>
-                <td>
-                    <label for="client!contact!list">list</label>
-                    <input type="checkbox" id="client!contact!list" name="client!contact!list" value="1" <?php if ($acl->isAllowed('client', 'contact', 'list')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!contact!edit">edit</label>
-                    <input type="checkbox" id="client!contact!edit" name="client!contact!edit" value="1" <?php if ($acl->isAllowed('client', 'contact', 'edit')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!contact!update">update</label>
-                    <input type="checkbox" id="client!contact!update" name="client!contact!update" value="1" <?php if ($acl->isAllowed('client', 'contact', 'update')) : ?> checked<?php endif; ?> /><br>
-                </td>
-                <td>
-                    <label for="employee!contact!list">list</label>
-                    <input type="checkbox" id="employee!contact!list" name="employee!contact!list" value="1" <?php if ($acl->isAllowed('employee', 'contact', 'list')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!contact!edit">edit</label>
-                    <input type="checkbox" id="employee!contact!edit" name="employee!contact!edit" value="1" <?php if ($acl->isAllowed('employee', 'contact', 'edit')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!contact!update">update</label>
-                    <input type="checkbox" id="employee!contact!update" name="employee!contact!update" value="1" <?php if ($acl->isAllowed('employee', 'contact', 'update')) : ?> checked<?php endif; ?> /><br>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">WorkProgress (Прогресс работы)</th>
-                <td>
-                    <label for="guest!workprogress!index">index</label>
-                    <input type="checkbox" id="guest!workprogress!index" name="guest!workprogress!index" value="1" <?php if ($acl->isAllowed('guest', 'workprogress', 'index')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!workprogress!edit">edit</label>
-                    <input type="checkbox" id="guest!workprogress!edit" name="guest!workprogress!edit" value="1" <?php if ($acl->isAllowed('guest', 'workprogress', 'edit')) : ?> checked<?php endif; ?> /><br>
-                    <label for="guest!workprogress!send">send</label>
-                    <input type="checkbox" id="guest!workprogress!send" name="guest!workprogress!send" value="1" <?php if ($acl->isAllowed('guest', 'workprogress', 'send')) : ?> checked<?php endif; ?> /><br>
-                </td>
-                <td>
-                    <label for="client!workprogress!index">index</label>
-                    <input type="checkbox" id="client!workprogress!index" name="client!workprogress!index" value="1" <?php if ($acl->isAllowed('client', 'workprogress', 'index')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!workprogress!edit">edit</label>
-                    <input type="checkbox" id="client!workprogress!edit" name="client!workprogress!edit" value="1" <?php if ($acl->isAllowed('client', 'workprogress', 'edit')) : ?> checked<?php endif; ?> /><br>
-                    <label for="client!workprogress!send">send</label>
-                    <input type="checkbox" id="client!workprogress!send" name="client!workprogress!send" value="1" <?php if ($acl->isAllowed('client', 'workprogress', 'send')) : ?> checked<?php endif; ?> /><br>
-                </td>
-                <td>
-                    <label for="employee!workprogress!index">index</label>
-                    <input type="checkbox" id="employee!workprogress!index" name="employee!workprogress!index" value="1" <?php if ($acl->isAllowed('employee', 'workprogress', 'index')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!workprogress!edit">edit</label>
-                    <input type="checkbox" id="employee!workprogress!edit" name="employee!workprogress!edit" value="1" <?php if ($acl->isAllowed('employee', 'workprogress', 'edit')) : ?> checked<?php endif; ?> /><br>
-                    <label for="employee!workprogress!send">send</label>
-                    <input type="checkbox" id="employee!workprogress!send" name="employee!workprogress!send" value="1" <?php if ($acl->isAllowed('employee', 'workprogress', 'send')) : ?> checked<?php endif; ?> /><br>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <button class="btn btn-primary" type="submit">Подтвердить</button>
-</form>
+<div class="m-3">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Роли</h5>
+                    <h5 class="card-title role" style="display: none;"></h5>
+                </div>
+                <ul class="list-group list-group-flush" id="rolesList">
+                    <?php $iter = 0;
+                    foreach ($roles_desc as $role) { ?>
+                        <li class="list-group-item" value="<?= $roles[$iter] ?>"><?= $role ?></li>
+                    <?php $iter++;
+                    }  ?>
+                </ul>
+            </div>
+            <div class="button-actions mt-3">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRolesModal" data-bs-whatever="addRolesModal">
+                    Добавление роли
+                </button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#delRolesModal" data-bs-whatever="delRolesModal">
+                    Удаление роли
+                </button><br>
+                <button class="btn btn-primary mt-3" id="send" type="button">Подтвердить</button>
+            </div>
+        </div>
+        <div class="col-md-9" id="controllersList" style="display: none;">
+            <div class="row row-cols-3">
+                <?php $iter = 0;
+                foreach (json_decode($controllers) as $controller => $actions) {
+                ?>
+                    <div class="col">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h5 class="card-title"><?= $controllers_desc[$iter] . "($controller)" ?></h5>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <?php foreach ($actions as $action) { ?>
+                                    <li class="list-group-item">
+                                        <label for="<?= $action ?>"><?= $action ?></label>
+                                        <input class="allowList" id="<?= $action ?>" type="checkbox" name="<?= $controller ?>" value="<?= $action ?>">
+                                    </li>
+                                <?php } ?>
+                            </ul>
+                        </div>
+                    </div>
+                <?php $iter = $iter + 1;
+                } ?>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addRolesModal" tabindex="-1" aria-labelledby="addRolesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addRolesModalLabel">Добавление роли</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post">
+                <div class="modal-body">
+                    <div class="mb-3 add-role">
+                        <label for="role-name" class="col-form-label">Код роли</label>
+                        <input type="text" class="form-control" name="role">
+                    </div>
+                    <div class="mb-3 add-role">
+                        <label for="role-desc-name" class="col-form-label">Название роли</label>
+                        <input type="text" class="form-control" name="role_desc">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="submit" class="btn btn-primary add">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="delRolesModal" tabindex="-1" aria-labelledby="delRolesModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="delRolesModalLabel">Удаление роли</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post">
+                <div class="modal-body">
+                    <div class="mb-3 del-role">
+                        <h5>Выберите роль для удаления:</h1>
+                            <ol class="list-group list-group-flush list-group-numbered">
+                                <?php $iter = 0;
+                                foreach ($roles_desc as $role) { ?>
+                                    <li class="list-group-item rolesList">
+                                        <label for="<?= $roles[$iter] ?>"><?= $role ?></label>
+                                        <input type="checkbox" id="<?= $roles[$iter] ?>" name="<?= $roles[$iter] ?>">
+                                    </li>
+                                <?php $iter++;
+                                }  ?>
+                            </ol>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="submit" class="btn btn-primary del">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const rolesList = document.getElementById('rolesList');
+        const controllersList = document.getElementById('controllerList');
+        const allowList = document.querySelectorAll('.allowList');
+        const allowData = <?php echo $allow_list ?>;
+        let dataToSend = <?php echo $allow_list ?>;
+        let role;
+        let conditionData = {};
+
+
+        function getCurrentRole() {
+            const currentRole = document.querySelector('.role');
+            currentRole.textContent = `Текущая роль: ${event.target.textContent}`
+            currentRole.style.display = 'block';
+        }
+        rolesList.addEventListener('click', function() {
+            role = event.target.getAttribute('value');
+            getCurrentRole();
+            addCheckedList(role);
+            console.log(role);
+        })
+
+        allowList.forEach(function(input) {
+            input.addEventListener('click', function() {
+                const setCheck = event.target.checked;
+                const action = event.target.getAttribute('value');
+                const controller = event.target.getAttribute('name');
+
+                console.log(setCheck);
+                console.log(action);
+                console.log(controller);
+                console.log(role);
+                if (!conditionData[role]) {
+                    conditionData[role] = {};
+                }
+                if (!conditionData[role][controller]) {
+                    conditionData[role][controller] = {};
+                }
+                conditionData[role][controller][action] = setCheck;
+                dataToSend[role][controller][action] = setCheck;
+                console.log(conditionData);
+            });
+        });
+
+        function addCheckedList(role) {
+            console.log(conditionData);
+            const controllers = allowData[role];
+            for (const controller in controllers) {
+                const actions = controllers[controller];
+                for (const action in actions) {
+                    const allow = actions[action];
+                    const input = document.querySelector(`input[name="${controller}"][value="${action}"]`)
+                    if (allow) {
+                        input.checked = true;
+
+                    } else {
+                        input.checked = false;
+
+                    }
+                }
+            }
+            if (conditionData[role]) {
+                const conditionControllers = conditionData[role];
+                for (const controller in conditionControllers) {
+                    const actions = conditionControllers[controller];
+                    for (const action in actions) {
+                        const allow = actions[action];
+                        const input = document.querySelector(`input[name="${controller}"][value="${action}"]`)
+                        if (allow) {
+                            input.checked = true;
+                        } else {
+                            input.checked = false;
+                        }
+                    }
+                }
+
+            }
+
+            document.getElementById('controllersList').style.display = 'block';
+            console.log(dataToSend);
+        }
+
+        const delbtnModal = document.querySelector('[data-bs-whatever="delRolesModal"]');
+        const ol = document.querySelector('.list-group-numbered');
+        const fol = document.querySelectorAll('ol input');
+        const delbtn = document.querySelector('.del');
+        let rolesDataToSend = [];
+
+        ol.addEventListener('click', function(event) {
+            if (event.target.closest('.rolesList')) {
+                const input = event.target.querySelector('input');
+                input.checked = !input.checked;
+
+            }
+            console.log(ol);
+            console.log(event.target.closest('.rolesList'));
+            console.log(event.target.querySelector('input'));
+        });
+
+        const btn = document.getElementById("send");
+        btn.addEventListener('click', function() {
+            fetch('/access/', {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(dataToSend),
+                })
+                .then((response) => {
+                    location.replace('/access');
+                    return response.json();
+                })
+
+        });
+    });
+</script>

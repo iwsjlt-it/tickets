@@ -9,11 +9,12 @@ class AclService extends Acl
     protected $aclFile = APP_PATH . '/services/acl.cache';
     protected $directory = APP_PATH . '/controllers/';
 
+
     public function getControllersList()
     {
         $controllers = str_replace('Controller.php', '', scandir($this->directory));
         foreach ($controllers as $controller) {
-            if ($controller === "." || $controller === ".." || $controller === 'Security' || $controller === 'Access') {
+            if ($controller === "." || $controller === ".." || $controller === 'Security' || $controller === 'Access' || $controller === 'Errors' || !str_contains($controller, 'Controller.php')) {
                 continue;
             }
             $components[strtolower($controller)] = $this->getActionList($controller);
@@ -22,21 +23,21 @@ class AclService extends Acl
     }
     public function getControllersDesc()
     {
-        if ($handle = opendir($this->directory)) {
-            while (false !== ($file = readdir($handle))) {
-                if ($file === "." || $file === ".." || $file === 'SecurityController.php' || $file === 'AccessController.php') {
-                    continue;
-                }
-                $filePath = $this->directory . DIRECTORY_SEPARATOR . $file;
-                $readFile = file($filePath);
-                foreach ($readFile as $value) {
-                    if (str_contains($value, '*') && !str_contains($value, '/')) {
-                        $controllersDesc[] = trim(str_replace(['*', '/', '"'], '', $value));
-                    }
+        $controllersDesc = [];
+        $files = scandir($this->directory);
+        foreach ($files as $file) {
+            if ($file === "." || $file === ".." || $file === 'SecurityController.php' || $file === 'AccessController.php' || $file === 'ErrorsController.php') {
+                continue;
+            }
+            $filePath = $this->directory . DIRECTORY_SEPARATOR . $file;
+            $readFile = file($filePath);
+            foreach ($readFile as $value) {
+                if (str_contains($value, '*') && !str_contains($value, '/') && !str_contains($value, '@')) {
+                    $controllersDesc[] = trim(str_replace(['*', '/', '"'], '', $value));
                 }
             }
-            closedir($handle);
         }
+
         return $controllersDesc;
     }
     public function getActionList($controller)
@@ -81,11 +82,27 @@ class AclService extends Acl
         }
         return $allow_list;
     }
-    public function initRole()
+    public function initRole($role, $role_desc)
     {
+        $acl = $this->load();
+        $acl->addRole(new Role($role, $role_desc));
+        file_put_contents($this->aclFile, serialize($acl));
     }
-    public function removeRole()
+    public function removeRole($remove_roles)
     {
+        $acl = $this->load();
+        $roles = $acl->roles;
+        foreach ($remove_roles as $role_name => $value) {
+            $role_names[] = $role_name;
+        }
+        foreach ($roles as $role) {
+            if (in_array($role->getName(), $role_names)) {
+                continue;
+            }
+            $clean_roles[$role->getName()] = $role;
+        }
+        $acl->roles = $clean_roles;
+        file_put_contents($this->aclFile, serialize($acl));
     }
     public function create()
     {
