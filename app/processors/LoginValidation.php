@@ -7,6 +7,7 @@ class LoginValidation extends Validation
 {
     public function initialize()
     {
+        
         $this->add(
             [
                 'email', 'password'

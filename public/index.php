@@ -86,6 +86,14 @@ $container->set(
     }
 );
 
+$container->set(
+    'mail',
+    function () {
+        $mail_config = parse_ini_file(APP_PATH . '/services/phpmailer/mail.ini');
+        return new MailService($mail_config);
+    }
+);
+
 
 $application = new Application($container);
 

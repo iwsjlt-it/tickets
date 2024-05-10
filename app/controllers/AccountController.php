@@ -1,6 +1,14 @@
 <?php
 
 declare(strict_types=1);
+
+// use PHPMailer\PHPMailer\PHPMailer;
+// use PHPMailer\PHPMailer\Exception;
+
+// require '../app/services/phpmailer/PHPMailer.php';
+// require '../app/services/phpmailer/SMTP.php';
+// require '../app/services/phpmailer/Exception.php';
+
 /**
  * Аккаунт
  */
@@ -10,13 +18,11 @@ class AccountController extends SecurityController
     {
         $this->view->pageTitle = 'Аккаунт';
         if ($this->session->has('userId')) {
-            
+
             $user = (new Users())->findFirstById($this->session->get('userId'));
             echo $user->name . PHP_EOL;
             var_dump($this->session->get('userId'));
             var_dump($user->role);
-            
-           
         } else {
             echo '[Как вы сюда попали?]';
         }
@@ -94,14 +100,59 @@ class AccountController extends SecurityController
             }
         }
     }
-    public function recoveryAction()
+    public function resetAction()
     {
-        $this->view->pageTitle = 'Восстановление доступа';
+        $this->view->pageTitle = 'Сброс пароля';
+        if (!empty($_GET)) {
+            if ($user = ((new Users)->findFirstByEmail($_GET['email']))) {
+
+                $token = $this->security->getToken();
+                $this->mail->setFrom('zed-n.v@mail.ru', 'ООО "Зумер"');
+                $this->mail->addAddress($user->email, $user->name);
+                $this->mail->Subject = 'Сброс пароля';
+                $percentage_coding = str_replace('@', '%40', $user->email); //Процентное кодирование
+                $rnd_pass = $this->security->getRandom()->base62(14);
+                $url = (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' .  $_SERVER['HTTP_HOST'] . "/account/reset/{$token}?email={$percentage_coding}"; //Создание уникальной ссылки
+
+                $this->view->name = $user->name;
+                $this->view->link = $url;
+                $this->mail->Body = file_get_contents(APP_PATH . '/views/account/mail.phtml');
+                $this->mail->sendWithExceptions();
+                $data = [
+                    'key' => 'value'
+                ];
+                $this->view
+                    ->start()
+                    ->render("account", "reset")
+                    ->finish();
+                return $this->response->setJsonContent($data);
+                //$url = (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+            } else {
+                $this->view->content = 'Неверная почта';
+            }
+        }
     }
+
+    public function newPasswordAction($token)
+    {
+        $token_key = $this->security->getTokenKey();
+        if ($token === $token_key) {
+            echo 'good';
+        }
+    }
+
     public function logoutAction()
     {
         $this->view->pageTitle = 'Выйти';
         $this->response->redirect('/account/login');
         $this->session->destroy();
+    }
+    public function sendMailJsonAction()
+    {
+        $data = [
+            'key' => 'value'
+        ];
+
+        return $this->response->setJsonContent($data);
     }
 }

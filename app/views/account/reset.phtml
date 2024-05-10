@@ -1,0 +1,32 @@
+<form method="get">
+    <div class="container position-absolute top-50 start-50 translate-middle login">
+        <div class="container text-center">
+            <span class="formheader">Сброс пароля</span>
+        </div>
+        <?php if (isset($content) && !empty($content)) : ?>
+            <div class="alert alert-danger text-center mt-3">
+                <span><?= $content; ?></span>
+            </div>
+        <?php endif; ?>
+        <div class="mb-3 mt-4">
+            <label for="email" class="form-label">Введите почту</label>
+            <input type="email" class="form-control" id="email" name="email">
+        </div>
+        <button type="submit" class="container text-center btn btn-primary mb-3 mt-2">Сбросить</button>
+    </div>
+</form>
+<p class="name">Здравствуйте, </p>
+<a href="http://"></a>
+<script>
+    const pName = document.querySelector('.name');
+    const aLink = document.querySelector('a')
+    fetch('/json/mail.json')
+        .then(response => response.json())
+        .then(data => {
+                const name = data['name'];
+                const link = data['link'];
+                const nameTest = pName.textContent = pName.textContent + name;
+                const aTest = aLink.text = link;
+            }
+        );
+</script>

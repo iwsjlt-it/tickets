@@ -18,15 +18,21 @@ class AccessController extends SecurityController
         $this->view->controllers = json_encode($acl->getControllersList());
         $this->view->controllers_desc = $acl->getControllersDesc();
         if ($this->request->isPost()) {
-            if (isset($_POST['role']) && isset($_POST['role_desc'])) {
-                $acl->initRole($_POST['role'], $_POST['role_desc']);
-            } else if ($_SERVER['CONTENT_TYPE'] === 'application/json') {
+            if (empty($_POST)) {
                 $accessData = json_decode(file_get_contents('php://input'), true);
                 $acl->update($accessData);
             } else {
                 $acl->removeRole($_POST);
             }
+
+            if (isset($_POST['role']) && isset($_POST['role_desc'])) {
+                $acl->initRole($_POST['role'], $_POST['role_desc']);
+            }
             $this->response->redirect('/access');
         }
+    }
+    public function sendAccessJsonAction()
+    {
+
     }
 }

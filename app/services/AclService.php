@@ -6,15 +6,18 @@ use Phalcon\Acl\Role;
 
 class AclService extends Acl
 {
-    protected $aclFile = APP_PATH . '/services/acl.cache';
+    protected $aclFile = APP_PATH . '/services/acl/acl.cache';
     protected $directory = APP_PATH . '/controllers/';
-
-
     public function getControllersList()
     {
-        $controllers = str_replace('Controller.php', '', scandir($this->directory));
+        $controllers = [];
+        foreach ($controllersList =  scandir($this->directory) as $controller) {
+            if (str_contains($controller, 'Controller.php')) {
+                $controllers[] = str_replace('Controller.php', '', $controller);
+            }
+        }
         foreach ($controllers as $controller) {
-            if ($controller === "." || $controller === ".." || $controller === 'Security' || $controller === 'Access' || $controller === 'Errors' || !str_contains($controller, 'Controller.php')) {
+            if ($controller === "." || $controller === ".." || $controller === 'Security' || $controller === 'Access' || $controller === 'Errors') {
                 continue;
             }
             $components[strtolower($controller)] = $this->getActionList($controller);
@@ -42,9 +45,14 @@ class AclService extends Acl
     }
     public function getActionList($controller)
     {
-        $actions = array_diff(get_class_methods($controller . 'Controller'), array('BeforeExecuteRoute', '__construct', '__get', '__isset', 'getDI', 'setDI'));
-        $actions = str_replace('Action', '', $actions);
-        return $actions;
+        $clean_acttions = [];
+        $actions = get_class_methods($controller . 'Controller');
+        foreach ($actions as $action) {
+            if (str_contains($action, 'Action') && !str_contains($action, 'Json')) {
+                $clean_acttions[] = str_replace('Action', '', $action);
+            }
+        }
+        return $clean_acttions;
     }
     public function getRolesDesc($acl)
     {
@@ -104,7 +112,14 @@ class AclService extends Acl
         $acl->roles = $clean_roles;
         file_put_contents($this->aclFile, serialize($acl));
     }
-    public function create()
+    public function setBaseAccess($acl)
+    {
+        $acl->allow('admin', '*', '*');
+        $acl->deny('admin', 'account', ['login', 'signup', 'reset', 'newPassword']);
+        $acl->allow('guest', 'account',  ['login', 'signup', 'reset', 'newPassword']);
+        $acl->allow('guest', 'index', 'index');
+    }
+    public function initAcl()
     {
         $acl = new Acl();
         $acl->addRole(new Role('admin', 'Админ'));
@@ -116,11 +131,8 @@ class AclService extends Acl
         foreach ($components as $controller => $actions) {
             $acl->addComponent($controller, $actions);
         }
-        // Базовый доступ
-        $acl->allow('admin', '*', '*');
-        $acl->deny('admin', 'account', ['login', 'signup', 'recovery']);
-        $acl->allow('guest', 'account',  ['login', 'signup', 'recovery']);
-        $acl->allow('guest', 'index', 'index');
+
+        $this->setBaseAccess($acl);
 
         file_put_contents($this->aclFile, serialize($acl));
         return $acl;
@@ -132,29 +144,30 @@ class AclService extends Acl
             $acl = unserialize(file_get_contents($this->aclFile));
             return $acl;
         } else {
-            return $this->create();
+            return $this->initAcl();
         }
     }
     public function update($accessData)
     {
-        $acl = $this->load();
-        // $acl->access = array();
-        // foreach ($accessData as $key => $value) {
-        //     $acl->access[$key] = (int)$value;
-        // }
-        $acl->access = array();
-        foreach ($accessData as $role => $controllers) {
-            foreach ($controllers as $controller => $actions) {
-                foreach ($actions as $action => $access) {
-                    if ($access === true) {
-                        $acl->allow($role, $controller, $action);
+        try {
+            $acl = $this->load();
+            $acl->access = array();
+            foreach ($accessData as $role => $controllers) {
+                foreach ($controllers as $controller => $actions) {
+                    foreach ($actions as $action => $access) {
+                        if ($access === true) {
+                            $acl->allow($role, $controller, $action);
+                        }
                     }
                 }
             }
+        } catch (\Exception $e) {
+            $components = $this->getControllersList();
+            foreach ($components as $controller => $actions) {
+                $acl->addComponent($controller, $actions);
+            }
         }
-        $acl->allow('admin', '*', '*');
-        $acl->deny('admin', 'account', ['login', 'signup', 'recovery']);
-        $acl->allow('guest', 'account',  ['login', 'signup', 'recovery']);
+        $this->setBaseAccess($acl);
         file_put_contents($this->aclFile, serialize($acl));
     }
 }

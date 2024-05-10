@@ -4,28 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const allowList = document.querySelectorAll('.allowList');
     let allowData = {};
    
-    fetch('/access/', {  
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Ошибка при получении данных с сервера');
-            }
-           console.log(response.json());
-        })
-        .then(data => {
-            // Обрабатываем полученные данные
-            console.log(data);
-            allowData = data;
-        })
-        .catch(error => {
-            // Обработка ошибок
-            console.error('Произошла ошибка:', error);
-        });
-
+    
     let role;
     let conditionData = {};
 
