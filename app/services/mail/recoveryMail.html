@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang='ru'>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta http-equiv="Content-Type" content="text/html charset=UTF-8" />
+</head>
+
+<body>
+    <div class="container_logo">
+        <div class="container_logo_item">
+            <img width="250" height="70" src="https://zummer.su/wp-content/uploads/2017/12/zummer-logo.png" alt="Лого"
+                srcset="">
+        </div>
+    </div>
+    <p class="name">Здравствуйте, .</p>
+    <p>Было запрошено восстановление пароля для вашего аккаунта.</p>
+    <p>Чтобы установить новый пароль, перейдите по ссылке:</p>
+    <p>
+        <a></a>
+    </p>
+    <p>Если вы не запрашивали восстановление пароля, то проигнорируйте это письмо.</p>
+    <p>С уважением, ООО "Зуммер"</p>
+    <p><a href="http://tickets/">Главная страница</a> || <a href="http://tickets/info">Справочная информация</a></p> 
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const p = document.querySelector('.name');
+        const a = document.querySelector('a')
+        fetch('/json/mail.json')
+            .then(response => response.json())
+            .then(data => {
+                const name = data['name'];
+                const link = data['link'];
+                p.textContent = p.textContent + name;
+                a.textContent = link;
+                a.href = link;
+            }
+            );
+    });
+</script>

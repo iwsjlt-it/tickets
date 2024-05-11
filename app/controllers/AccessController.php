@@ -31,8 +31,4 @@ class AccessController extends SecurityController
             $this->response->redirect('/access');
         }
     }
-    public function sendAccessJsonAction()
-    {
-
-    }
 }

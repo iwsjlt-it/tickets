@@ -23,7 +23,8 @@ class AccessService implements InjectionAwareInterface
     }
     public function getUserRole()
     {
-        $role = $this->container->get('session')->userRole = (Users::findFirstById($this->container->get('session')->get('userId')))->role ?? 'guest'; // любой кто зайдёт на страницу загрузит сессию
+        // любой кто зайдёт на страницу загрузит сессию
+        $role = $this->container->get('session')->userRole = (Users::findFirstById($this->container->get('session')->get('userId')))->role ?? 'guest';
         return $role;
     }
     public function hasAccess(): bool
@@ -40,7 +41,6 @@ class AccessService implements InjectionAwareInterface
                     "action"     => "code401",
                 ]);
                 $this->container->get('response')->setStatusCode(401, 'Unauthorized');
-                // $this->container->get('response')->setContent("Для доступа нужно войти в аккаунт");
                 return false;
             }
         } else if ($this->acl->isAllowed($this->container->get('session')->userRole, $this->controller, $this->action)) {

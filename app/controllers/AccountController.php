@@ -1,14 +1,6 @@
 <?php
 
 declare(strict_types=1);
-
-// use PHPMailer\PHPMailer\PHPMailer;
-// use PHPMailer\PHPMailer\Exception;
-
-// require '../app/services/phpmailer/PHPMailer.php';
-// require '../app/services/phpmailer/SMTP.php';
-// require '../app/services/phpmailer/Exception.php';
-
 /**
  * Аккаунт
  */
@@ -103,41 +95,88 @@ class AccountController extends SecurityController
     public function resetAction()
     {
         $this->view->pageTitle = 'Сброс пароля';
-        if (!empty($_GET)) {
-            if ($user = ((new Users)->findFirstByEmail($_GET['email']))) {
+        if ($this->request->isPost()) {
+            if ($user = (Users::findFirstByEmail($this->request->getPost('email', ['email', 'trim', 'striptags', 'string'])))) {
 
-                $token = $this->security->getToken();
-                $this->mail->setFrom('zed-n.v@mail.ru', 'ООО "Зумер"');
+                $uuid = $this->security->getRandom()->uuid();
+                $reset_password_record = new ResetPassword();
+                if ($reset_password_record_exists = ResetPassword::findFirstByEmail($user->email)) {
+                    $reset_password_record_exists->delete("email={$user->email}");
+                }
+                $reset_password_record->email = $user->email;
+                $reset_password_record->uuid = $uuid;
+
+                if (!$reset_password_record->save()) {
+                    echo 'Ошибка';
+                    return false;
+                }
+
+                $this->mail->setFrom('zed-n.v@mail.ru', 'ООО "Зуммер"');
                 $this->mail->addAddress($user->email, $user->name);
                 $this->mail->Subject = 'Сброс пароля';
-                $percentage_coding = str_replace('@', '%40', $user->email); //Процентное кодирование
-                $rnd_pass = $this->security->getRandom()->base62(14);
-                $url = (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' .  $_SERVER['HTTP_HOST'] . "/account/reset/{$token}?email={$percentage_coding}"; //Создание уникальной ссылки
+                //Процентное кодирование для корректного URL
+                $percentage_coding = str_replace('@', '%40', $user->email);
 
-                $this->view->name = $user->name;
-                $this->view->link = $url;
-                $this->mail->Body = file_get_contents(APP_PATH . '/views/account/mail.phtml');
+                //Временная уникальная ссылка
+                $link = (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' .  $_SERVER['HTTP_HOST'] . "/account/newPassword/{$uuid}?email={$percentage_coding}";
+
+                $mail_content = file_get_contents(APP_PATH . '/services/mail/recoveryMail.html');
+                $mail_content = str_replace('<p class="name">Здравствуйте, .</p>', "<p class=\"name\">Здравствуйте, {$user->name}.</p>", $mail_content);
+                $mail_content = str_replace('<a></a>', "<a href=\"{$link}\">{$link}</a>", $mail_content);
+
+                $this->mail->Body = $mail_content;
+
                 $this->mail->sendWithExceptions();
-                $data = [
-                    'key' => 'value'
-                ];
-                $this->view
-                    ->start()
-                    ->render("account", "reset")
-                    ->finish();
-                return $this->response->setJsonContent($data);
-                //$url = (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
             } else {
                 $this->view->content = 'Неверная почта';
             }
         }
     }
 
-    public function newPasswordAction($token)
+
+    public function newPasswordAction($uuid)
     {
-        $token_key = $this->security->getTokenKey();
-        if ($token === $token_key) {
-            echo 'good';
+        $filters = ['email', 'trim', 'striptags', 'string'];
+        $email = $this->request->get('email', $filters);
+
+        $reset_password_record = ResetPassword::findFirstByUuid($uuid);
+
+        if (is_null($reset_password_record)) {
+            echo '<h1>Ссылка неверная или срок её действия истёк</h1>';
+            return false;
+        }
+        if ($reset_password_record->email !== $email) {
+            echo '<h1>Ссылка неверная или срок её действия истёк</h1>';
+            return false;
+        }
+
+        $this->view->pageTitle = 'Новый пароль';
+
+        if ($this->request->isPost()) {
+
+            $filters = ['trim', 'striptags', 'string'];
+            $password = $this->request->getPost('password', $filters, null, true);
+            $password_confirm = $this->request->getPost('password-confirm', $filters, null, true);
+            if (is_null($password) && is_null($password_confirm)) {
+                $this->view->errors = 'Пустое значение';
+                // Дальнейший код не выполняется, но при этом ошибка рендерится на сайте
+                return true;
+            }
+            if ($password !== $password_confirm) {
+                $this->view->errors = 'Пароли не совпадают';
+                // Дальнейший код не выполняется, но при этом ошибка рендерится на сайте
+                return true;
+            }
+
+            $password = $this->security->hash($password);
+            $user = Users::findFirstByEmail($email);
+            $user->password = $password;
+            if ($user->save()) {
+                $reset_password_record->delete("email={$email}");
+                $this->response->redirect('/account/login');
+            }
+            echo 'Ошибка в самом конце (почти) ;(';
+            return false;
         }
     }
 
@@ -147,7 +186,7 @@ class AccountController extends SecurityController
         $this->response->redirect('/account/login');
         $this->session->destroy();
     }
-    public function sendMailJsonAction()
+    public function sendMailDataAction()
     {
         $data = [
             'key' => 'value'

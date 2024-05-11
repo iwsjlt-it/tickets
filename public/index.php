@@ -9,7 +9,6 @@ use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Session\Adapter\Stream;
 use Phalcon\Session\Manager;
 
-
 define('BASE_PATH', dirname(__DIR__));
 define('APP_PATH', BASE_PATH . '\app');
 
